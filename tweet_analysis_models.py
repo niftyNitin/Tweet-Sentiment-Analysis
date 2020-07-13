@@ -141,19 +141,19 @@ print("Text Preprocessing complete.")
 print('Time Taken: ', round(time.time() - t), 'seconds')
 print()
 
-# # word clouds for negative tweets
-# data_neg = processed_text[:800000]
-# plt.figure(figsize=(20, 20))
-# wc = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_neg))
-# plt.imshow(wc)
-# plt.show()
-#
-# # word clouds for negative tweets
-# data_neg = processed_text[800000:]
-# plt.figure(figsize=(20, 20))
-# wc2 = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_neg))
-# plt.imshow(wc2)
-# plt.show()
+# word clouds for negative tweets
+data_neg = processed_text[:800000]
+plt.figure(figsize=(20, 20))
+wc = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_neg))
+plt.imshow(wc)
+plt.show()
+
+# word clouds for negative tweets
+data_neg = processed_text[800000:]
+plt.figure(figsize=(20, 20))
+wc2 = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_neg))
+plt.imshow(wc2)
+plt.show()
 
 X_train, X_test, y_train, y_test = train_test_split(processed_text, sentiment, test_size=0.05, random_state=0)
 print("Data Split done.")
