@@ -10,6 +10,7 @@ import seaborn as sns
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from yellowbrick.text import FreqDistVisualizer
+from yellowbrick import set_palette
 
 # nltk
 from nltk.stem import WordNetLemmatizer
@@ -19,7 +20,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
 from sklearn.naive_bayes import BernoulliNB
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import confusion_matrix, classification_report
 
 DATASET_COLUMNS = ["sentiment", "ids", "date", "flag", "user", "text"]
@@ -107,15 +108,15 @@ def preprocess(textdata):
         tweet = tweet.lower()
 
         # Replace all URls with 'URL'
-        tweet = re.sub(url_pattern, ' URL', tweet)
+        tweet = re.sub(url_pattern, '', tweet)
         # Replace negation
         for appos in appostrophes.keys():
             tweet = tweet.replace(appos, appostrophes[appos])
         # Replace all emojis.
         for emoji in emojis.keys():
-            tweet = tweet.replace(emoji, 'EMOJI' + emojis[emoji])
+            tweet = tweet.replace(emoji, emojis[emoji])
         # Replace @USERNAME to 'USER'.
-        tweet = re.sub(user_pattern, ' USER', tweet)
+        tweet = re.sub(user_pattern, '', tweet)
         # Replace all non alphabets.
         tweet = re.sub(alpha_pattern, ' ', tweet)
         # Replace 3 or more consecutive letters by 2 letter.
@@ -145,6 +146,7 @@ print()
 data_neg = processed_text[:800000]
 plt.figure(figsize=(20, 20))
 wc = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_neg))
+plt.axis('off')
 plt.imshow(wc)
 plt.show()
 
@@ -152,6 +154,7 @@ plt.show()
 data_neg = processed_text[800000:]
 plt.figure(figsize=(20, 20))
 wc2 = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_neg))
+plt.axis('off')
 plt.imshow(wc2)
 plt.show()
 
@@ -171,6 +174,7 @@ X_test = vectorizer.transform(X_test)
 print("Data transformed")
 print()
 
+set_palette('sns_pastel')
 visualizer = FreqDistVisualizer(
     features=vectorizer.get_feature_names()
 )
