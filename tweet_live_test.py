@@ -65,6 +65,21 @@ stopwordlist = ['a', 'about', 'above', 'after', 'again', 'ain', 'all', 'am', 'an
                 'why', 'will', 'with', 'won', 'y', 'you', "youd", "youll", "youre",
                 "youve", 'your', 'yours', 'yourself', 'yourselves']
 
+# Defining set of negations
+appostrophes = {"aren't": "are not",
+                "can't": "cannot",
+                "couldn't": "could not",
+                "won't": "would not",
+                "shouldn't": "should not",
+                "hadn't": "had not",
+                "hasn't": "has not",
+                "haven't": "have not",
+                "mustn't": "must not",
+                "isn't": "is not",
+                "didn't": "did not",
+                "doesn't": "does not",
+                "don't": "do not"}
+
 
 # # # # TWITTER STREAM LISTENER # # # #
 # noinspection PyCompatibility
@@ -117,14 +132,17 @@ class TweetAnalyzer:
             tweet = tweet.lower()
 
             # Replace all URls with 'URL'
-            tweet = re.sub(url_pattern, ' URL', tweet)
+            tweet = re.sub(url_pattern, '', tweet)
+            # Replace negation
+            for appos in appostrophes.keys():
+                tweet = tweet.replace(appos, appostrophes[appos])
             # Replace all emojis.
             for emoji in emojis.keys():
-                tweet = tweet.replace(emoji, "EMOJI" + emojis[emoji])
-                # Replace @USERNAME to 'USER'.
-            tweet = re.sub(user_pattern, ' USER', tweet)
+                tweet = tweet.replace(emoji, emojis[emoji])
+            # Replace @USERNAME to 'USER'.
+            tweet = re.sub(user_pattern, '', tweet)
             # Replace all non alphabets.
-            tweet = re.sub(alpha_pattern, " ", tweet)
+            tweet = re.sub(alpha_pattern, ' ', tweet)
             # Replace 3 or more consecutive letters by 2 letter.
             tweet = re.sub(sequence_pattern, seq_replace_pattern, tweet)
 
