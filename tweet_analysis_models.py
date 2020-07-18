@@ -150,10 +150,10 @@ plt.axis('off')
 plt.imshow(wc)
 plt.show()
 
-# word clouds for negative tweets
-data_neg = processed_text[800000:]
+# word clouds for positive tweets
+data_pos = processed_text[800000:]
 plt.figure(figsize=(20, 20))
-wc2 = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_neg))
+wc2 = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_pos))
 plt.axis('off')
 plt.imshow(wc2)
 plt.show()
